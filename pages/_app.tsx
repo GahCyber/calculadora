@@ -89,7 +89,7 @@ export default function App() {
                 onClick={() => handleConclude(task.id)}
               >
                 ✅
-              </button>
+              </button> 
             </div>
           </li>
         ))}
