@@ -1,24 +1,26 @@
-# Lista de Tarefas - React App
+# Calculadora em Next.js e TypeScript
 
-Este é um aplicativo simples de lista de tarefas desenvolvido com React. Ele permite adicionar, concluir e excluir tarefas, além de organizar as tarefas concluídas ao final da lista.
+Uma calculadora simples desenvolvida utilizando Next.js e TypeScript.
 
-## Funcionalidades
+## Descrição
 
-- Adicionar tarefas.
-- Concluir tarefas.
-- Excluir tarefas.
-- Organizar tarefas concluídas ao final da lista.
+Este projeto é uma calculadora básica que suporta operações aritméticas fundamentais, como adição, subtração, multiplicação e divisão. Foi desenvolvida com o objetivo de praticar e demonstrar habilidades em Next.js e TypeScript.
 
 ## Tecnologias Utilizadas
 
-- **React**: Biblioteca JavaScript para construção da interface de usuário.
-- **SCSS**: Pré-processador CSS utilizado para estilização.
+- [Next.js](https://nextjs.org/): Framework React com renderização do lado do servidor e geração de sites estáticos.
+- [TypeScript](https://www.typescriptlang.org/): Superset do JavaScript que adiciona tipagem estática ao código.
 
-## Instalação
+## Funcionalidades
 
-Siga os passos abaixo para rodar o projeto localmente:
+- Interface intuitiva e responsiva.
+- Suporte a operações básicas: adição, subtração, multiplicação e divisão.
 
-1. **Clone o repositório**:
+## Como Executar o Projeto
 
-```bash
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
+Siga os passos abaixo para clonar e executar o projeto localmente:
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone https://github.com/seu-usuario/calculadora-nextjs.git
