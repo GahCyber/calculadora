@@ -2,98 +2,66 @@ import React, { useState } from "react";
 import "../styles/_styles.scss";
 
 export default function App() {
-  const [task, setTask] = useState("");  // Armazena a tarefa digitada
-  const [tasks, setTasks] = useState([]); // Armazena a lista de tarefas
+  const [input, setInput] = useState(""); // Armazena a expressão digitada
 
-  const handleAddTask = () => {
-    if (task.trim()) { //Remove os espaços do canto
-      // Gerar um ID único para cada tarefa
-      const newTask = { id: Date.now(), text: task, concluded: false };
-      setTasks(prevTasks => [...prevTasks, newTask]);
-      setTask(""); // Limpa o campo após adicionar a tarefa
+  // Função para lidar com a entrada do usuário
+  const handleInput = (value) => {
+    setInput((prevInput) => prevInput + value);
+  };
+
+  // Função para calcular o resultado
+  const handleCalculate = () => {
+    try {
+      // Avalia a expressão usando a função eval
+      const result = eval(input);
+      setInput(result.toString());
+    } catch (error) {
+      setInput("Erro");
     }
   };
 
-  const handleInputChange = (e) => {
-    setTask(e.target.value);
+  // Função para limpar o input
+  const handleClear = () => {
+    setInput("");
   };
 
-  // Função para capturar a tecla Enter e adicionar a tarefa
-  const handleKeyDown = (tecla) => {
-    if (tecla.key === "Enter") {
-      handleAddTask();
+  // Função para capturar a tecla Enter e calcular o resultado
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleCalculate();
     }
   };
-
-  // Função para excluir uma tarefa
-  const handleDelete = (id) => {
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
-  };
-
-  // Função para concluir uma tarefa
-  const handleConclude = (id) => {
-    setTasks(prevTasks =>
-      prevTasks.map(task =>
-        task.id === id ? { ...task, concluded: true } : task
-      )
-    );
-  };
-
-  // Ordenar as tarefas para colocar as concluídas no final
-  const sortedTasks = tasks.slice().sort((a, b) => a.concluded - b.concluded);
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">Lista de Tarefas</h1>
-
-      {/* Input para adicionar tarefas */}
-      <div className="input-group mb-3">
+    <div id="all">
+      <div id="campo-numero">
         <input
+          id="input-conta"
           type="text"
           className="form-control"
-          placeholder="Digite uma tarefa"
-          value={task}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}  // Adicionando o evento de tecla
+          placeholder="0"
+          value={input}
+          onChange={(evento) => setInput(evento.target.value)}
+          onKeyDown={handleKeyDown}
         />
-        <button
-          className="btn btn-primary"
-          onClick={handleAddTask}
-        >
-          Adicionar
-        </button>
       </div>
-
-      {/* Exibindo as tarefas */}
-      <ul className="list-group">
-        {sortedTasks.map((task) => (
-          <li
-            id="li-tarefa"
-            key={task.id}
-            className={`list-group-item d-flex justify-content-between align-items-center ${
-              task.concluded ? "concluded" : ""
-            }`}
-          >
-            {task.text}
-            <div className="d-flex ml-auto">
-              <button
-                id="btn-deletar"
-                className="btn btn-primary"
-                onClick={() => handleDelete(task.id)}
-              >
-                ❌
-              </button>
-              <button
-                id="btn-concluido"
-                className="btn btn-primary"
-                onClick={() => handleConclude(task.id)}
-              >
-                ✅
-              </button> 
-            </div>
-          </li>
+      <hr id="linha" />
+      <div id="nmb-C">
+        <button id="C" onClick={handleClear}>
+          C
+        </button>
+        {[9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((num) => (
+          <button key={num} onClick={() => handleInput(num.toString())}>
+            {num}
+          </button>
         ))}
-      </ul>
+        {["+", "-", "*", "/"].map((operator) => (
+          <button key={operator} onClick={() => handleInput(operator)}>
+            {operator}
+          </button>
+        ))}
+        <button onClick={handleCalculate}>=</button>
+      </div>
     </div>
   );
 }
