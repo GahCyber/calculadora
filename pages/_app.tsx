@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const App = () => {
   const [input, setInput] = useState(""); // Armazena a expressão digitada
@@ -11,17 +11,47 @@ const App = () => {
   // Função para calcular o resultado
   const handleCalculate = () => {
     try {
-      const result = eval(input);  // Calcula o resultado da expressão
-      setInput(result.toString()); // Exibe o resultado
+      // Substitui 'log' por 'Math.log' para calcular logaritmos
+      const result = eval(input.replace(/log/g, "Math.log"));
+      setInput(result.toString());
     } catch (error) {
-      setInput("Erro"); // Exibe "Erro" caso a expressão seja inválida
+      setInput("Erro");
     }
   };
 
-  // Função para limpar a entrada
+  // Função para limpar o input
   const handleClear = () => {
-    setInput(""); // Limpa o campo de entrada
+    setInput("");
   };
+
+  // Função para capturar a tecla Enter e calcular o resultado
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleCalculate();
+    }
+  };
+
+  // Adicionando o link do Bootstrap no head dinamicamente
+  useEffect(() => {
+    // Verificando se o link já foi adicionado
+    if (!document.querySelector("link[href*='bootstrap.min.css']")) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href =
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css";
+      link.integrity =
+        "sha384-KyZXEJ6vS7OeDTKJmQnmntCqt5p9dy2MVEkVhmVwD5j/wG9xUFEF9L2yql5B+XaN";
+      link.crossOrigin = "anonymous";
+      document.head.appendChild(link);
+    }
+
+    return () => {
+      const link = document.querySelector("link[href*='bootstrap.min.css']");
+      if (link) {
+        document.head.removeChild(link);
+      }
+    };
+  }, []);
 
   return (
     <div className="container my-4">
@@ -35,41 +65,101 @@ const App = () => {
               placeholder="0"
               value={input}
               onChange={(evento) => setInput(evento.target.value)}
+              onKeyDown={handleKeyDown}
+              aria-label="Calculadora"
+              aria-describedby="basic-addon2"
             />
           </div>
 
-          <div className="row">
+          {/* Linha para os botões */}
+          <div className="row mb-2">
             <div className="col-3">
               <button className="btn btn-danger w-100" onClick={handleClear}>
                 C
               </button>
             </div>
+            <div className="col-3">
+              <button className="btn btn-secondary w-100" onClick={() => handleInput("(")}>
+                (
+              </button>
+            </div>
+            <div className="col-3">
+              <button className="btn btn-secondary w-100" onClick={() => handleInput(")")}>
+                )
+              </button>
+            </div>
+            <div className="col-3">
+              <button className="btn btn-info w-100" onClick={() => handleInput("log(")}>
+                log
+              </button>
+            </div>
+          </div>
+
+          {/* Linha com números e divisão */}
+          <div className="row mb-2">
             {[7, 8, 9].map((num) => (
-              <div className="col-3" key={num}>
-                <button
-                  className="btn btn-light w-100"
-                  onClick={() => handleInput(num.toString())}
-                >
+              <div className="col-4" key={num}>
+                <button className="btn btn-light w-100" onClick={() => handleInput(num.toString())}>
                   {num}
                 </button>
               </div>
             ))}
-            <div className="col-3">
+            <div className="col-4">
               <button className="btn btn-warning w-100" onClick={() => handleInput("/")}>
                 /
               </button>
             </div>
           </div>
 
-          {/* Mais botões, etc. */}
-          <div className="row">
-            <div className="col-3">
-              <button className="btn btn-light w-100" onClick={() => handleInput("1")}>
-                1
+          {/* Linha com mais números e multiplicação */}
+          <div className="row mb-2">
+            {[4, 5, 6].map((num) => (
+              <div className="col-4" key={num}>
+                <button className="btn btn-light w-100" onClick={() => handleInput(num.toString())}>
+                  {num}
+                </button>
+              </div>
+            ))}
+            <div className="col-4">
+              <button className="btn btn-warning w-100" onClick={() => handleInput("*")}>
+                *
               </button>
             </div>
-            {/* Outros botões */}
-            <div className="col-3">
+          </div>
+
+          {/* Linha com os últimos números e subtração */}
+          <div className="row mb-2">
+            {[1, 2, 3].map((num) => (
+              <div className="col-4" key={num}>
+                <button className="btn btn-light w-100" onClick={() => handleInput(num.toString())}>
+                  {num}
+                </button>
+              </div>
+            ))}
+            <div className="col-4">
+              <button className="btn btn-warning w-100" onClick={() => handleInput("-")}>
+                -
+              </button>
+            </div>
+          </div>
+
+          {/* Linha para o 0 e adição */}
+          <div className="row mb-2">
+            <div className="col-8">
+              <button className="btn btn-light w-100" onClick={() => handleInput("0")}>
+                0
+              </button>
+            </div>
+            <div className="col-4">
+              <button className="btn btn-warning w-100" onClick={() => handleInput("+")}>
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Linha com o botão de resultado */}
+          <div className="row">
+            <div className="col-12">
               <button className="btn btn-success w-100" onClick={handleCalculate}>
                 =
               </button>
