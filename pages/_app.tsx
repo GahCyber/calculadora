@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
-export default function App() {
-  const [input, setInput] = useState(''); // Armazena a expressão digitada
+const App = () => {
+  const [input, setInput] = useState(""); // Armazena a expressão digitada
 
   // Função para lidar com a entrada do usuário
-  const handleInput = (value) => {
+  const handleInput = (value: string) => {
     setInput((prevInput) => prevInput + value);
   };
 
@@ -12,24 +12,40 @@ export default function App() {
   const handleCalculate = () => {
     try {
       // Substitui 'log' por 'Math.log' para calcular logaritmos
-      const result = eval(input.replace(/log/g, 'Math.log'));
+      const result = eval(input.replace(/log/g, "Math.log"));
       setInput(result.toString());
     } catch (error) {
-      setInput('Erro');
+      setInput("Erro");
     }
   };
 
   // Função para limpar o input
   const handleClear = () => {
-    setInput('');
+    setInput("");
   };
 
   // Função para capturar a tecla Enter e calcular o resultado
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
       handleCalculate();
     }
   };
+
+  // Adicionando o link do Bootstrap no head dinamicamente
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href =
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css";
+    link.integrity =
+      "sha384-KyZXEJ6vS7OeDTKJmQnmntCqt5p9dy2MVEkVhmVwD5j/wG9xUFEF9L2yql5B+XaN";
+    link.crossOrigin = "anonymous";
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link); // Limpa o link ao desmontar o componente
+    };
+  }, []);
 
   return (
     <div className="container my-4">
@@ -57,17 +73,17 @@ export default function App() {
               </button>
             </div>
             <div className="col-3">
-              <button className="btn btn-secondary w-100" onClick={() => handleInput('(')}>
+              <button className="btn btn-secondary w-100" onClick={() => handleInput("(")}>
                 (
               </button>
             </div>
             <div className="col-3">
-              <button className="btn btn-secondary w-100" onClick={() => handleInput(')')}>
+              <button className="btn btn-secondary w-100" onClick={() => handleInput(")")}>
                 )
               </button>
             </div>
             <div className="col-3">
-              <button className="btn btn-info w-100" onClick={() => handleInput('log(')}>
+              <button className="btn btn-info w-100" onClick={() => handleInput("log(")}>
                 log
               </button>
             </div>
@@ -83,7 +99,7 @@ export default function App() {
               </div>
             ))}
             <div className="col-4">
-              <button className="btn btn-warning w-100" onClick={() => handleInput('/')}>
+              <button className="btn btn-warning w-100" onClick={() => handleInput("/")}>
                 /
               </button>
             </div>
@@ -99,7 +115,7 @@ export default function App() {
               </div>
             ))}
             <div className="col-4">
-              <button className="btn btn-warning w-100" onClick={() => handleInput('*')}>
+              <button className="btn btn-warning w-100" onClick={() => handleInput("*")}>
                 *
               </button>
             </div>
@@ -115,7 +131,7 @@ export default function App() {
               </div>
             ))}
             <div className="col-4">
-              <button className="btn btn-warning w-100" onClick={() => handleInput('-')}>
+              <button className="btn btn-warning w-100" onClick={() => handleInput("-")}>
                 -
               </button>
             </div>
@@ -124,12 +140,12 @@ export default function App() {
           {/* Linha para o 0 e adição */}
           <div className="row mb-2">
             <div className="col-8">
-              <button className="btn btn-light w-100" onClick={() => handleInput('0')}>
+              <button className="btn btn-light w-100" onClick={() => handleInput("0")}>
                 0
               </button>
             </div>
             <div className="col-4">
-              <button className="btn btn-warning w-100" onClick={() => handleInput('+')}>
+              <button className="btn btn-warning w-100" onClick={() => handleInput("+")}>
                 +
               </button>
             </div>
@@ -147,4 +163,6 @@ export default function App() {
       </div>
     </div>
   );
-}
+};
+
+export default App;
